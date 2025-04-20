@@ -6,6 +6,9 @@ import SignUp from "./pages/Auth/register/SignUp";
 import Register from "./pages/Auth/register/Register";
 import Profile from "./pages/profilePage/Profile";
 import CreatePrescriptionPage from "./pages/prescriptions/CreatePrescriptionPage";
+import NormalLayout from "./Layouts/NormalLayout";
+import RequiringAuth from "./Layouts/RequiringAuth";
+import PrescriptionsPage from "./pages/PrescriptionsPage/PrescriptionsPage";
 
 function App() {
   return (
@@ -14,8 +17,14 @@ function App() {
         <Route element={<Login />} path="/login" />
         <Route element={<SignUp />} path="/register" />
         <Route element={<Register />} path="/signUp" />
-        <Route element={<Profile />} path="/profile/:id" />
-        <Route element={<CreatePrescriptionPage />} path="/prescription" />
+      </Route>
+
+      <Route element={<RequiringAuth />}>
+        <Route element={<NormalLayout />}>
+          <Route element={<Profile />} path="/profile/" />
+          <Route element={<PrescriptionsPage />} path="/prescription" />
+          <Route element={<CreatePrescriptionPage />} path="/prescription/create" />
+        </Route>
       </Route>
     </Routes>
   );

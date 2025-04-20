@@ -11,6 +11,7 @@ function CustomButton({
 }: CustomButtonProps) {
   return (
     <button
+    className="bg-primary w-fit text-white font-bold py-2 px-4 rounded-full cursor-pointer hover:scale-90 active:scale-105"
       onClick={onClick}
       disabled={loading}
     >

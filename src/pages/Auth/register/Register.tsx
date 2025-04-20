@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useRef, useState } from "react";
-import CustomButton from "../../../components/CustomButton";
+import CustomButton from "../../../components/CustomButton/CustomButton";
 import { useQuery } from "@tanstack/react-query";
 
 type bloodType =

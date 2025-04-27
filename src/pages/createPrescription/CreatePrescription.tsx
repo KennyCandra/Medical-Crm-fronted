@@ -3,9 +3,9 @@ import axios from "axios";
 import { useState } from "react";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import DrugInfo from "../../components/DrugInfo/DrugInfo";
-import { userStore } from "../../zustand/userStore";
 import CustomDropDownMenu from "../../components/CustomDropDownMenu/CustomDropDownMenu";
 import { useNavigate } from "react-router-dom";
+import { useUserId } from "../../axios/usePrescriptions";
 
 type props = {
   patientId?: string;
@@ -38,8 +38,8 @@ type userAPI = {
 };
 
 function CreatePrescription({ patientId: initialPatientId }: props) {
-  const navigate = useNavigate()
-  const { medLiscence } = userStore();
+  const navigate = useNavigate();
+  const { userIdQuery } = useUserId();
   const [select, setSelect] = useState<mdeication[]>([]);
   const [patientId, setPatientId] = useState<string>(initialPatientId || "");
   const [searchValue, setSearchValue] = useState<string>("");
@@ -74,7 +74,7 @@ function CreatePrescription({ patientId: initialPatientId }: props) {
       });
 
       if (res.status === 201) {
-        navigate('/profile')
+        navigate("/");
       }
     } catch (err) {
       console.log(err);
@@ -94,20 +94,13 @@ function CreatePrescription({ patientId: initialPatientId }: props) {
     }
   };
 
-  const formFields = [
-    {
-      label: "patient NID",
-      name: "patientNid",
-      value: patientId || "please choose patient nid",
-      disabled: true,
-    },
-    {
-      label: "doctor NID",
-      name: "doctorId",
-      value: medLiscence || "",
-      disabled: true,
-    },
-  ];
+  if (userIdQuery.isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (userIdQuery.isError) {
+    return <div>Error loading user data. Please try again.</div>;
+  }
 
   return (
     <div className="flex flex-col mx-4">
@@ -117,17 +110,25 @@ function CreatePrescription({ patientId: initialPatientId }: props) {
       <form onSubmit={(e) => e.preventDefault()}>
         <div className="flex justify-between">
           <div>
-            {formFields.map((field) => (
-              <div key={field.name} className="space-x-4">
-                <label htmlFor={field.name}>{field.label}</label>
-                <input
-                  type="text"
-                  name={field.name}
-                  value={field.value}
-                  disabled={field.disabled}
-                />
-              </div>
-            ))}
+            <div className="space-x-4">
+              <label htmlFor={"field.name"}>patient NID</label>
+              <input
+                type="text"
+                name={"patientNid"}
+                value={patientId}
+                disabled={true}
+              />
+            </div>
+
+            <div className="space-x-4">
+              <label htmlFor={"doctorId"}>doctor NID</label>
+              <input
+                type="text"
+                name={"doctorId"}
+                value={userIdQuery.data.profileId}
+                disabled={true}
+              />
+            </div>
           </div>
 
           <CustomDropDownMenu

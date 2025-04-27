@@ -1,6 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
-import { userStore } from "../../zustand/userStore";
-import axios from "axios";
 import ProfilePageCard from "../../components/ProfilePageCard/ProfilePageCard";
 import DoctorActionsCard from "../../components/DoctorActions/DoctorActionsCard";
 type card = {
@@ -47,25 +44,12 @@ const DoctorActions = [
 ];
 
 function Profile() {
-  const { user, accessToken } = userStore();
-  const { data } = useQuery({
-    queryKey: ["profile", user],
-    queryFn: () =>
-      axios
-        .get(`http://localhost:8001/auth/profile`, {
-          headers: {
-            Authorization: accessToken,
-            "Content-Type": "application/json",
-          },
-        })
-        .then((res) => res.data),
-  });
-  console.log(data);
   return (
     <div className="mt-20 ml-5">
       <div className="font-primary flex gap-5">
         {cardsInputs.map((input) => (
           <ProfilePageCard
+            key={input.id}
             text={input.text}
             number={input.number}
             color={input.color ? input.color : ""}

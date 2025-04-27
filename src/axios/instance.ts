@@ -1,16 +1,19 @@
 import axios from "axios";
 import { userStore } from "../zustand/userStore";
 
+const API_BASE_URL = "http://localhost:8001";
+
 const instance = axios.create({
-    baseURL: "http://localhost:8001",
+    baseURL: API_BASE_URL,
+    withCredentials: true,
 })
 
 
 instance.interceptors.request.use(function (config) {
-    const accessToken = userStore().accessToken;
+    const { accessToken } = userStore.getState();
 
     if (accessToken) {
-        instance.defaults.headers.common['Authorization'] = accessToken
+        config.headers['Authorization'] = `${accessToken}`;
     }
     return config;
 }, function (error) {
@@ -22,11 +25,12 @@ instance.interceptors.response.use(function (response) {
     return response;
 }, async error => {
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response && error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         try {
             const res = await axios.get('http://localhost:8001/auth/refresh', { withCredentials: true });
-            console.log(res)
+            const { accessToken } = res.data;
+            userStore.getState().setAccessToken(accessToken);
             return instance(originalRequest);
         } catch (err) {
             window.location.href = "/login";

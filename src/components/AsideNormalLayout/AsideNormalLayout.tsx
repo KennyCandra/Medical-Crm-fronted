@@ -3,7 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 const navLinkVar = [
   {
     id: 1,
-    path: "/profile",
+    path: "/",
     name: "Home",
   },
   {

@@ -1,74 +1,153 @@
-import ProfilePageCard from "../../components/ProfilePageCard/ProfilePageCard";
-import DoctorActionsCard from "../../components/DoctorActions/DoctorActionsCard";
-type card = {
+import { userStore } from "../../zustand/userStore";
+import { useState } from "react";
+import useFetchDoctorData from "../../Services/useFetchDoctorData";
+import { usePrescriptions } from "../../Services/usePrescriptions";
+import useFetchPatientDiagnosis from "../../Services/useFetchPatientDiagnosis";
+import useFetchPatientAllergy from "../../Services/useFetchPatientAllergy";
+import Presentational from "./Presentational";
+
+export type card = {
   id: number;
   text: string;
   number: number | string;
   color: string | null;
+  allowedRoles?: string[];
+  textUrl?: string;
 };
 
-const cardsInputs: card[] = [
+export type PrescriptionCard = {
+  id: number;
+  status: string;
+  text: string;
+  number: number;
+  color: string;
+  icon?: string;
+  link?: string;
+};
+
+const actions = [
   {
     id: 1,
-    text: "prescriptions",
-    number: 100,
-    color: " bg-linear-to-r from-primary via-primary to-white text-white",
+    action: "Create a Prescription",
+    img: "/images/prescription.svg",
+    link: "/prescription/create",
+    allowedRoles: ["doctor", "owner"],
   },
   {
     id: 2,
-    text: "diagnosis",
-    number: 100,
-    color: null,
+    action: "Make a Diagnosis",
+    img: "/images/report-medical.svg",
+    link: "/diagnosis/create",
+    allowedRoles: ["doctor", "owner"],
   },
   {
     id: 3,
-    text: "sepcialazation",
-    number: "some description idk",
-    color: null,
-  },
-];
-
-const DoctorActions = [
-  {
-    id: 1,
-    action: "create a prescription",
-    img: "/images/prescription.svg",
-    link: "/prescription/create",
-  },
-  {
-    id: 2,
-    action: "make a diagnosis",
-    img: "/images/report-medical.svg",
-    link: "/",
+    action: "Define Your Allergies",
+    img: "/images/allergies-solid.svg",
+    link: "/allergy/create",
+    allowedRoles: ["patient"],
   },
 ];
 
 function Profile() {
-  return (
-    <div className="mt-20 ml-5">
-      <div className="font-primary flex gap-5">
-        {cardsInputs.map((input) => (
-          <ProfilePageCard
-            key={input.id}
-            text={input.text}
-            number={input.number}
-            color={input.color ? input.color : ""}
-          />
-        ))}
-      </div>
+  const { prescriptionsQuery } = usePrescriptions();
+  const { user, role, nid } = userStore();
+  const [err, setErr] = useState<string>("");
+  const header = (role: "doctor" | "patient" | "owner") => {
+    switch (role) {
+      case "doctor":
+        return `Dr: ${user}`;
+      case "patient":
+        return "Your Health Dashboard";
+      default:
+        return "Dashboard";
+    }
+  };
+  const doctor = useFetchDoctorData(user, setErr, role);
 
-      <div className="mt-10 flex flex-col gap-2 p-2 border border-gray-400 w-[25%]">
-        <h1 className="font-bold text-3xl">Doctor Actions</h1>
-        {DoctorActions.map((action) => (
-          <DoctorActionsCard
-            link={action.link}
-            img={action.img ? action.img : ""}
-            action={action.action}
-            key={action.id}
-          />
-        ))}
-      </div>
-    </div>
+  const diagnosisQuery = useFetchPatientDiagnosis(nid);
+  const allergyQuery = useFetchPatientAllergy(nid, role);
+  const diagnsis =
+    diagnosisQuery?.data?.diagnosis.map((diagnoses) => {
+      return diagnoses.disease.name;
+    }) || [];
+
+  console.log(allergyQuery.data);
+  const qrData = `http://192.168.1.10:5173/patient/${nid}`;
+
+  const prescriptions: PrescriptionCard[] = [
+    {
+      id: 1,
+      text: "Active Prescriptions",
+      link: "/prescription?status=taking",
+      number: prescriptionsQuery.data?.notCompleted || 0,
+      status: "Active",
+      color: "bg-green-100 text-green-800",
+      icon: "💊",
+    },
+    {
+      id: 2,
+      text: "Completed Prescriptions",
+      number: prescriptionsQuery.data?.completed || 0,
+      status: "Completed",
+      link: "/prescription?status=completed",
+      color: "bg-gray-100 text-gray-800",
+      icon: "✓",
+    },
+  ];
+
+  const cardsInputs: card[] = [
+    {
+      id: 1,
+      text: "prescriptions",
+      number: prescriptionsQuery.data?.prescriptions.length || 0,
+      color: " bg-linear-to-r from-primary via-primary to-white text-white",
+      allowedRoles: ["doctor", "patient"],
+      textUrl: "/prescription",
+    },
+    {
+      id: 2,
+      text: "diagnosis",
+      number:
+        role === "patient"
+          ? diagnsis.length > 0
+            ? `this patient is diagnosed with ${diagnsis.join(", ")}`
+            : "No diagnosis available"
+          : 100,
+      color: null,
+      allowedRoles: ["doctor", "patient"],
+    },
+    {
+      id: 3,
+      text: doctor.data?.speciality ? doctor.data.speciality : "N/A",
+      number: "speciality",
+      color: null,
+      allowedRoles: ["doctor"],
+    },
+    {
+      id: 4,
+      text: "Allergies",
+      number: "None reported",
+      color: null,
+      allowedRoles: ["patient"],
+      textUrl: "/allergy/create",
+    },
+  ];
+
+  return (
+    <Presentational
+      actions={actions}
+      cardsInputs={cardsInputs}
+      header={header(role)}
+      nid={nid}
+      qrData={qrData}
+      role={role}
+      prescriptions={prescriptions}
+      showQrCode={false}
+      prescriptionsQuery={prescriptionsQuery}
+      key={"1"}
+      user={user}
+    />
   );
 }
 

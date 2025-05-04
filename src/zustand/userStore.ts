@@ -5,6 +5,7 @@ type state = {
     accessToken: string | null
     role: 'patient' | 'doctor' | 'owner' | null
     isAuthenticated: boolean
+    nid: string | null
 }
 
 
@@ -13,6 +14,7 @@ type actions = {
     setAccessToken: (accessToken: state['accessToken']) => void;
     setRole: (role: state['role']) => void;
     setIsAuthenticated: (isAuthenticated: state['isAuthenticated']) => void;
+    setNid: (nid: state['nid']) => void;
 }
 
 export const userStore = create<state & actions>((set) => ({
@@ -20,8 +22,10 @@ export const userStore = create<state & actions>((set) => ({
     accessToken: null,
     role: null,
     isAuthenticated: false,
+    nid: null,
     setUser: (user) => set({ user }),
     setAccessToken: (accessToken) => set({ accessToken }),
     setRole: (role) => set({ role }),
     setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
+    setNid: (nid) => set({ nid }),
 }))

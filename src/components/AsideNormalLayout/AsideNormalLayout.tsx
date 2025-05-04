@@ -1,47 +1,248 @@
 import { NavLink, useLocation } from "react-router-dom";
+import { userStore } from "../../zustand/userStore";
+import axios from "axios";
+import {
+  Home,
+  FileText,
+  Activity,
+  PieChart,
+  Calendar,
+  Settings,
+  LogOut,
+  AlertCircle,
+  Users,
+  User,
+} from "lucide-react";
+import { useState, useEffect } from "react";
+import { Tooltip } from "../Tooltip/Tooltip";
 
-const navLinkVar = [
+const navigationItems = [
   {
-    id: 1,
     path: "/",
     name: "Home",
+    icon: Home,
+    allowedRoles: ["patient", "doctor", "owner"],
   },
   {
-    id: 2,
+    path: undefined,
+    name: "Appointments",
+    icon: Calendar,
+    allowedRoles: ["doctor", "owner"],
+  },
+  {
     path: "/prescription",
-    name: "Prescription",
+    name: "Prescriptions",
+    icon: FileText,
+    allowedRoles: ["patient", "doctor", "owner"],
   },
   {
-    id: 3,
+    path: "/diagnosis/create",
+    name: "Diagnosis",
+    icon: Activity,
+    allowedRoles: ["doctor", "owner"],
+  },
+  {
+    path: undefined,
+    name: "Patients",
+    icon: Users,
+    allowedRoles: ["doctor", "owner"],
+  },
+  {
+    path: "/allergy/create",
+    name: "Allergies",
+    icon: AlertCircle,
+    allowedRoles: ["patient", "owner"],
+  },
+  {
     path: "/analytics",
     name: "Analytics",
+    icon: PieChart,
+    allowedRoles: ["owner"],
+  },
+  {
+    path: undefined,
+    name: "Settings",
+    icon: Settings,
+    allowedRoles: ["patient", "doctor", "owner"],
   },
 ];
 
-function AsideNormalLayout() {
+function AsideNormalLayout({ isCollapsed, setIsCollapsed }) {
+  const { user, role, setAccessToken, setIsAuthenticated, setRole, setUser } =
+    userStore();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const location = useLocation();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      if (window.innerWidth < 768) {
+        setIsCollapsed(true);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await axios.delete("http://localhost:8001/auth/logout", {
+        withCredentials: true,
+      });
+      setAccessToken("");
+      setIsAuthenticated(false);
+      setRole(null);
+      setUser("");
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
-    <div>
-      {" "}
-      <aside className="h-screen bg-primary flex flex-col gap-10 w-44 justify-center items-center">
-        <img src="/images/logo-2.png" className="pt-20 w-15 h-40" />
-        <nav className="h-full w-full items-end flex flex-col gap-10 ">
-          {navLinkVar.map((link) => (
-            <NavLink
-              key={link.id}
-              to={link.path}
-              className={() =>
-                `${
-                  location.pathname.includes(link.path) ? "bg-white" : ""
-                } w-[80%] pl-3 rounded-l-2xl font-bold py-3`
-              }
-            >
-              {link.name}
-            </NavLink>
-          ))}
-        </nav>
-      </aside>
-    </div>
+    <aside
+      className={`bg-primary text-white h-full transition-all duration-300 ease-in-out ${
+        isCollapsed ? "w-16" : "w-64"
+      } flex flex-col h-screen fixed top-0 left-0 shadow-lg`}
+    >
+      <button
+        className="self-end p-2 m-2 hover:bg-purple-600 rounded-lg md:block hidden"
+        onClick={() => setIsCollapsed(!isCollapsed)}
+      >
+        {isCollapsed ? (
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        ) : (
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        )}
+      </button>
+
+      <div
+        className={`flex items-center justify-center py-6 ${
+          isCollapsed ? "" : "px-4"
+        }`}
+      >
+        <div className="bg-white p-2 rounded">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12 3L20 7.5V16.5L12 21L4 16.5V7.5L12 3Z"
+              stroke="#6D28D9"
+              strokeWidth="2"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M12 8L16 10.5V15.5L12 18L8 15.5V10.5L12 8Z"
+              fill="#6D28D9"
+            />
+          </svg>
+        </div>
+        {!isCollapsed && <span className="ml-3 font-bold text-xl">Sanova</span>}
+      </div>
+      <nav className="flex-1 overflow-y-auto py-4">
+        <ul className="space-y-2 px-2">
+          {navigationItems
+            .filter((item) => item.allowedRoles.includes(role))
+            .map((item) => (
+              <li key={item.path}>
+                <NavLink
+                  to={item.path}
+                  className={({ isActive }) => `
+                    flex items-center p-3 rounded-lg transition-colors relative
+                    ${
+                      isActive && item.path !== undefined
+                        ? "bg-white text-purple-800 font-medium shadow-md"
+                        : "text-white  hover:bg-primary-hover hover:bg-opacity-10"
+                    }
+                    ${isCollapsed ? "justify-center" : "px-4"}
+                  `}
+                >
+                  {({ isActive }) => (
+                    <Tooltip content={isCollapsed ? item.name : ""}>
+                      <div className="flex items-center w-full z-100">
+                        <item.icon
+                          size={20}
+                          className={
+                            isActive && item.path !== undefined
+                              ? "text-purple-800"
+                              : "text-white"
+                          }
+                        />
+                        {!isCollapsed && (
+                          <span
+                            className={`ml-3 truncate ${
+                              isActive ? "font-medium" : ""
+                            }`}
+                          >
+                            {item.name}
+                          </span>
+                        )}
+                        {isActive && (
+                          <div className="absolute left-0 top-0 bottom-0 w-1  rounded-r"></div>
+                        )}
+                      </div>
+                    </Tooltip>
+                  )}
+                </NavLink>
+              </li>
+            ))}
+        </ul>
+      </nav>
+
+      {!isCollapsed && (
+        <div className="px-4 py-2 border-t border-purple-600">
+          <div className="flex items-center mb-2">
+            <div className="bg-purple-800 p-2 rounded-full">
+              <User size={16} className="text-white" />
+            </div>
+            <div className="ml-3">
+              <p className="text-sm font-medium truncate">{user || "User"}</p>
+              <p className="text-xs text-purple-300 capitalize">{role}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <button
+        onClick={handleLogout}
+        className={`
+          flex items-center p-3 cursor-pointer text-red-200 hover:bg-red-500 hover:bg-opacity-20 rounded-lg mb-4 mx-2
+          ${isCollapsed ? "justify-center" : "px-4"}
+        `}
+      >
+        <LogOut size={20} className="text-red-200" />
+        {!isCollapsed && <span className="ml-3">Logout</span>}
+      </button>
+    </aside>
   );
 }
 

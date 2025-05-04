@@ -14,6 +14,11 @@ import Analytics from "./pages/Analytics/Analytics";
 import CategoryAnalytics from "./pages/CategoryAnalytics/CategoryAnalytics";
 import ClassifcationAnalytics from "./pages/ClassifcationAnalytics/ClassifcationAnalytics";
 import RegisterPatient from "./pages/Auth/register/RegisterPatient";
+import CreateDiagonsis from "./pages/CreateDiagonisis/CreateDiagonsis";
+import GeneralDrugAnalytics from "./pages/GeneralDrugAnalytics/GeneralDrugAnalytics";
+import GeneralDiseaseAnalytics from "./pages/GeneralDiseaseAnalytics/GeneralDiseaseAnalytics";
+import DefineAllergy from "./pages/DefineAllergy/DefineAllergy";
+import SinglePatientPage from "./pages/profilePage/SinglePatientPage";
 
 function App() {
   return (
@@ -32,6 +37,7 @@ function App() {
             element={<SinglePagePrescription />}
             path="/prescription/:id"
           />
+          <Route element={<SinglePatientPage />} path="/patient/:nid" />
           <Route element={<PrescriptionsPage />} path="/prescription" />
           <Route element={<CategoryAnalytics />} path="/analytics/:id" />
           <Route
@@ -40,9 +46,19 @@ function App() {
           />
           <Route element={<Analytics />} path="/analytics" />
           <Route
+            element={<GeneralDrugAnalytics />}
+            path="/analytics/general-drug-analytics"
+          />
+          <Route
+            element={<GeneralDiseaseAnalytics />}
+            path="/analytics/general-disease-analytics"
+          />
+          <Route
             element={<CreatePrescriptionPage />}
             path="/prescription/create"
           />
+          <Route element={<DefineAllergy />} path="/allergy/create" />
+          <Route element={<CreateDiagonsis />} path="/diagnosis/create" />
         </Route>
       </Route>
     </Routes>

@@ -12,6 +12,7 @@ function RequiringAuth() {
     setRole,
     setAccessToken,
     setIsAuthenticated,
+    setNid,
   } = userStore();
 
   const { isExpired } = useJwt(accessToken!);
@@ -28,6 +29,7 @@ function RequiringAuth() {
     setUser(`${data.user.first_name} ${data.user.last_name}`);
     setRole(data.user.role);
     setAccessToken(data.accessToken);
+    setNid(data.user.NID);
 
     return data;
   };

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import instance from "./instance";
+import instance from "../axios/instance";
 import { userStore } from "../zustand/userStore";
 
 type Prescription = {
@@ -24,6 +24,8 @@ type Prescription = {
 type PrescriptionAPIResponse = {
     prescriptions: Prescription[];
     message: string;
+    notCompleted: number;
+    completed: number;
 };
 
 type UserAPIResponse = {
@@ -40,6 +42,11 @@ export const useUserId = () => {
             return data
         },
     });
+
+    if (userIdQuery.isError) {
+        console.log('error')
+        console.log(userIdQuery.error)
+    }
     return {
         userIdQuery,
     }

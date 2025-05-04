@@ -1,20 +1,32 @@
-type props = {
+import React from "react";
+import { Link } from "react-router-dom";
+
+interface ProfilePageCardProps {
   text: string;
   number: number | string;
-  color: string;
-};
+  color: string | null;
+  textUrl?: string;
+}
 
-function ProfilePageCard({ text, number, color }: props) {
+const ProfilePageCard: React.FC<ProfilePageCardProps> = ({
+  text,
+  number,
+  color,
+  textUrl,
+}) => {
+  const cardClass = color || "bg-white shadow-md text-gray-900";
+
   return (
-    <div
-      className={`border border-gray-400 rounded-2xl p-2 min-h-[100px] w-[25%] font-poppins text-md flex flex-col justify-between ${
-        color ? color : ` bg-white`
-      }`}
-    >
-    <p>{text}</p>
-    <p>{number}</p>
+    <div className={`rounded-lg p-6 ${cardClass} border-gray-500`}>
+      <Link
+        to={textUrl ? textUrl : undefined}
+        className="text-lg font-medium capitalize hover:underline"
+      >
+        {text}
+      </Link>
+      <div className="mt-2 text-1xl font-bold">{number}</div>
     </div>
   );
-}
+};
 
 export default ProfilePageCard;

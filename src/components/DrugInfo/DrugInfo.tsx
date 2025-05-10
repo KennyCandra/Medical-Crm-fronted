@@ -1,8 +1,8 @@
-import type { mdeication } from "../../pages/createPrescription/CreatePrescription";
+import type { medication } from "../../pages/createPrescription/CreatePrescription";
 
 type Props = {
-  name: mdeication;
-  setSelect: React.Dispatch<React.SetStateAction<mdeication[]>>;
+  name: medication;
+  setSelect: React.Dispatch<React.SetStateAction<medication[]>>;
 };
 
 function DrugInfo({ name, setSelect }: Props) {

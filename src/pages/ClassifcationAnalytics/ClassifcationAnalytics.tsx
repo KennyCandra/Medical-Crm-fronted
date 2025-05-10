@@ -3,8 +3,6 @@ import type { classificationApiData } from "../../../public/types/types";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  Pie,
-  PieChart,
   Tooltip,
   ResponsiveContainer,
   Cell,
@@ -211,7 +209,7 @@ function ClassificationAnalytics() {
                 formatter={(value) => [`${value} prescriptions`, "Count"]}
               />
               <Legend 
-                formatter={(value) => <span className="text-gray-700 font-medium">Number of Prescriptions</span>}
+                formatter={() => <span className="text-gray-700 font-medium">Number of Prescriptions</span>}
                 wrapperStyle={{ paddingTop: "1rem" }}
               />
               <Bar 
@@ -220,7 +218,7 @@ function ClassificationAnalytics() {
                 barSize={40}
                 radius={[4, 4, 0, 0]}
               >
-                {chartData.map((item, index) => (
+                {chartData.map((_, index) => (
                   <Cell
                     className="cursor-pointer hover:opacity-90"
                     key={`cell-${index}`}

@@ -4,7 +4,7 @@ import { userStore } from "../../zustand/userStore";
 import { ClipboardList } from "lucide-react";
 
 function ReportPage() {
-  const { user, role } = userStore();
+  const { user } = userStore();
   const reportsQuery = useReports();
 
   const tableHeaders = [

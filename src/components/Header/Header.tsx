@@ -126,7 +126,7 @@ function Header() {
                         Error fetching patients
                       </div>
                     ) : patientData.data?.users?.length ? (
-                      patientData.data.users.map((user, index) => (
+                      patientData.data.users.map((user) => (
                         <Link
                           to={`/patient/${user.nid}`}
                           key={user.nid}

@@ -177,7 +177,7 @@ function CategoryAnalytics() {
                 <Legend 
                   verticalAlign="bottom" 
                   height={36} 
-                  formatter={(value, entry) => {
+                  formatter={(value) => {
                     return (
                       <span className="text-gray-700 font-medium">{value}</span>
                     );

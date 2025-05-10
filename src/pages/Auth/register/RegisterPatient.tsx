@@ -2,7 +2,6 @@ import axios from "axios";
 import { ErrorMessage, Field, Formik, Form } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
-import DatePicker from "react-datepicker";
 import {
   User,
   Lock,
@@ -10,8 +9,6 @@ import {
   UserCircle,
   ArrowLeft,
   Calendar,
-  ChevronRight,
-  ChevronLeft,
 } from "lucide-react";
 
 interface MyFormValues {

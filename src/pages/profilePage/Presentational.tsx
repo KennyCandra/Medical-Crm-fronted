@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import type { PrescriptionCard, card } from "./Profile";
 
 type props = {
+  err: string;
   header: string;
   role: "doctor" | "patient" | "owner";
   qrData: string;

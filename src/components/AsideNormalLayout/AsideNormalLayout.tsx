@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { userStore } from "../../zustand/userStore";
 import axios from "axios";
 import {
@@ -12,8 +12,9 @@ import {
   AlertCircle,
   Users,
   User,
+  FileTextIcon,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Tooltip } from "../Tooltip/Tooltip";
 
 const navigationItems = [
@@ -39,7 +40,7 @@ const navigationItems = [
     path: "/diagnosis/create",
     name: "Diagnosis",
     icon: Activity,
-    allowedRoles: ["doctor", "owner"],
+    allowedRoles: ["doctor"],
   },
   {
     path: undefined,
@@ -51,12 +52,18 @@ const navigationItems = [
     path: "/allergy/create",
     name: "Allergies",
     icon: AlertCircle,
-    allowedRoles: ["patient", "owner"],
+    allowedRoles: ["patient"],
   },
   {
     path: "/analytics",
     name: "Analytics",
     icon: PieChart,
+    allowedRoles: ["owner"],
+  },
+  {
+    path: "/reports",
+    name: "Reports",
+    icon: FileTextIcon,
     allowedRoles: ["owner"],
   },
   {
@@ -70,12 +77,9 @@ const navigationItems = [
 function AsideNormalLayout({ isCollapsed, setIsCollapsed }) {
   const { user, role, setAccessToken, setIsAuthenticated, setRole, setUser } =
     userStore();
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const location = useLocation();
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
       if (window.innerWidth < 768) {
         setIsCollapsed(true);
       }
@@ -147,24 +151,11 @@ function AsideNormalLayout({ isCollapsed, setIsCollapsed }) {
         }`}
       >
         <div className="bg-white p-2 rounded">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12 3L20 7.5V16.5L12 21L4 16.5V7.5L12 3Z"
-              stroke="#6D28D9"
-              strokeWidth="2"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M12 8L16 10.5V15.5L12 18L8 15.5V10.5L12 8Z"
-              fill="#6D28D9"
-            />
-          </svg>
+          <img
+            src="/images/logo.png"
+            className="w-6 h-6 filter invert sepia saturate-200 hue-rotate-180 brightness-90 contrast-100"
+            color="black"
+          />
         </div>
         {!isCollapsed && <span className="ml-3 font-bold text-xl">Sanova</span>}
       </div>

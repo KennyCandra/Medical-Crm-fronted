@@ -2,7 +2,17 @@ import axios from "axios";
 import { ErrorMessage, Field, Formik, Form } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
-import { User, Lock, Droplet, UserCircle, ArrowLeft } from "lucide-react";
+import DatePicker from "react-datepicker";
+import {
+  User,
+  Lock,
+  Droplet,
+  UserCircle,
+  ArrowLeft,
+  Calendar,
+  ChevronRight,
+  ChevronLeft,
+} from "lucide-react";
 
 interface MyFormValues {
   firstName: string;
@@ -13,6 +23,7 @@ interface MyFormValues {
   license: string;
   gender: "male" | "female";
   blood_type: bloodType;
+  birth_date: Date;
 }
 
 type bloodType =
@@ -48,6 +59,7 @@ function RegisterPatient() {
     license: "",
     gender: "male",
     blood_type: "unknown",
+    birth_date: new Date(),
   };
 
   const validationSchema = Yup.object({
@@ -88,7 +100,7 @@ function RegisterPatient() {
         }}
         validationSchema={validationSchema}
       >
-        {({ isSubmitting, errors, touched }) => (
+        {({ isSubmitting, errors, touched, values, setFieldValue }) => (
           <Form className="space-y-5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -204,6 +216,43 @@ function RegisterPatient() {
             </div>
 
             <Field type="hidden" name="role" value="patient" />
+            <div>
+              <label
+                htmlFor="birth_date"
+                className="block text-sm font-medium font-['Poppins'] text-[#7a7a7a] mb-1"
+              >
+                Date of Birth
+              </label>
+              <div className="relative">
+                <Field
+                  type="date"
+                  name="birth_date"
+                  id="birth_date"
+                  className={`pl-10 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none font-['Work_Sans'] sm:text-sm ${
+                    errors.birth_date && touched.birth_date
+                      ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                      : "border-gray-300 focus:ring-[#663fba] focus:border-[#663fba]"
+                  }`}
+                  value={
+                    values.birth_date
+                      ? new Date(values.birth_date).toISOString().split("T")[0]
+                      : ""
+                  }
+                  onChange={(e) => {
+                    const dateValue = e.target.value;
+                    const dateObject = dateValue ? new Date(dateValue) : null;
+                    console.log(dateObject)
+                    setFieldValue("birth_date", dateObject);
+                  }}
+                />
+                <Calendar className="absolute left-3 top-2.5 h-4 w-4 text-[#7a7a7a]" />
+              </div>
+              <ErrorMessage
+                name="birth_date"
+                component="div"
+                className="text-red-500 text-xs mt-1 font-['Work_Sans']"
+              />
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>

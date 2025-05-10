@@ -32,6 +32,7 @@ export type prescribedDrugs = {
     dosage: string
     frequency: string
     drug: Drug
+    time: "before" | "after"
 }
 
 export type prescription = {
@@ -41,6 +42,7 @@ export type prescription = {
     prescribedDrugs: prescribedDrugs[]
     start_date: string
     status: "taking" | 'done'
+    description: string | null
 }
 
 export type analyticsApiData = {

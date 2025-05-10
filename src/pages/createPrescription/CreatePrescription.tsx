@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { useUserId } from "../../Services/usePrescriptions";
 import * as Yup from "yup";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { Form, Formik, Field, ErrorMessage } from "formik";
 import { debounce } from "lodash";
 import DrugDrugInteraction from "../../components/DrugDrugInteraction/DrugDrugInteraction";
 import instance from "../../axios/instance";
@@ -11,10 +11,6 @@ import DrugOldDrugInteraction from "../../components/DrugDrugInteraction/DrugOld
 import MedicationsTable from "../../components/MedicationsTable/MedicationTable";
 import PatientId from "../../components/formValues/PatientId";
 import DoctorId from "../../components/formValues/DoctorId";
-
-type props = {
-  patientId?: string;
-};
 
 type drug = {
   id: string;
@@ -37,6 +33,7 @@ interface MyFormValues {
   doctorId: string;
   patientId: string;
   medication: medication[];
+  description: string;
 }
 
 function CreatePrescription() {
@@ -50,12 +47,17 @@ function CreatePrescription() {
     doctorId: Yup.string().required("Doctor ID is required"),
     patientId: Yup.string().required("Patient ID is required"),
     medication: Yup.array().min(1, "At least one medication is required"),
+    description: Yup.string().max(
+      500,
+      "Description must be less than 500 characters"
+    ),
   });
 
   const initialValues: MyFormValues = {
     doctorId: userIdQuery.data?.profileId || "",
     patientId: "",
     medication: select,
+    description: "",
   };
 
   const debouncedSearchDrug = useRef(
@@ -165,10 +167,9 @@ function CreatePrescription() {
 
           <Formik
             initialValues={initialValues}
-            enableReinitialize
             onSubmit={async (
               values: MyFormValues,
-              { setSubmitting, setFieldError }
+              { setSubmitting, setFieldError, resetForm }
             ) => {
               try {
                 console.log(values);
@@ -182,7 +183,7 @@ function CreatePrescription() {
 
                 const res = await instance.post("presc/create", values);
                 if (res.status === 201) {
-                  values.medication = select;
+                  resetForm();
                   setSelect([]);
                   setMessage("created successfully");
                   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -228,7 +229,7 @@ function CreatePrescription() {
             validationSchema={validationSchema}
           >
             {({ isSubmitting, errors, touched, setFieldValue, values }) => (
-              <Form className="space-y-8">
+              <Form className="space-y-8" onClick={() => console.log(values)}>
                 {message && (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6 shadow-sm animate-fade-in">
                     <div className="flex">
@@ -278,6 +279,33 @@ function CreatePrescription() {
                       setPatientId={setPatientId}
                       setFieldValue={setFieldValue}
                     />
+
+                    <div className="mb-4">
+                      <label
+                        htmlFor="description"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        Prescription Description
+                      </label>
+                      <div className="mt-1 relative rounded-md shadow-sm">
+                        <Field
+                          as="textarea"
+                          id="description"
+                          name="description"
+                          rows={4}
+                          placeholder="Add notes or instructions about this prescription..."
+                          className="block w-full rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-3"
+                        />
+                        <div className="text-xs text-gray-500 mt-1 text-right">
+                          {values.description.length}/500 characters
+                        </div>
+                      </div>
+                      <ErrorMessage
+                        name="description"
+                        component="div"
+                        className="mt-1 text-sm text-red-600"
+                      />
+                    </div>
 
                     <div className="relative">
                       <h2 className="text-lg font-medium text-gray-700 mb-2 flex items-center">
@@ -545,7 +573,10 @@ function CreatePrescription() {
                         </p>
                       </div>
                       <div className="p-4">
-                        <DrugDrugInteraction medication={values.medication} />
+                        <DrugDrugInteraction
+                          patientNid={patientId}
+                          medication={select}
+                        />
                       </div>
                     </div>
 
@@ -560,7 +591,7 @@ function CreatePrescription() {
                       </div>
                       <div className="p-4">
                         <DrugOldDrugInteraction
-                          medication={values.medication}
+                          medication={select}
                           patientNid={patientId}
                         />
                       </div>

@@ -21,6 +21,9 @@ const MedicationsTable = ({ select, setSelect, setFieldValue }) => {
                     Frequency
                   </th>
                   <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                    time
+                  </th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
                     Action
                   </th>
                 </tr>
@@ -61,6 +64,22 @@ const MedicationsTable = ({ select, setSelect, setFieldValue }) => {
                         }}
                         placeholder="Frequency"
                       />
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm">
+                      <select
+                        className="border px-2 py-1 rounded w-24"
+                        value={med.time || ""}
+                        onChange={(e) => {
+                          const newSelect = [...select];
+                          newSelect[index].time = e.target.value;
+                          setSelect(newSelect);
+                          setFieldValue("medication", newSelect);
+                        }}
+                      >
+                        <option value="">Select</option>
+                        <option value="before">Before</option>
+                        <option value="after">After</option>
+                      </select>
                     </td>
                     <td className="px-4 py-2 whitespace-nowrap text-sm">
                       <button

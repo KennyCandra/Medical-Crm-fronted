@@ -136,6 +136,7 @@ function Profile() {
 
   return (
     <Presentational
+      err={err}
       actions={actions}
       cardsInputs={cardsInputs}
       header={header(role)}
@@ -143,7 +144,7 @@ function Profile() {
       qrData={qrData}
       role={role}
       prescriptions={prescriptions}
-      showQrCode={false}
+      showQrCode={true}
       prescriptionsQuery={prescriptionsQuery}
       key={"1"}
       user={user}

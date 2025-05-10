@@ -46,24 +46,7 @@ function Header() {
       <div className="flex justify-between items-center">
         <div className="flex items-center">
           <div className="bg-purple-700 text-white p-2 rounded mr-2">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M12 3L20 7.5V16.5L12 21L4 16.5V7.5L12 3Z"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M12 8L16 10.5V15.5L12 18L8 15.5V10.5L12 8Z"
-                fill="white"
-              />
-            </svg>
+          <img src="/images/logo.png"  className="size-6"/>
           </div>
           <h1 className="text-purple-700 text-2xl font-bold">Sanova</h1>
         </div>

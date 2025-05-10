@@ -10,6 +10,7 @@ import {
   Award,
   Stethoscope,
   ArrowLeft,
+  Calendar,
 } from "lucide-react";
 
 interface MyFormValues {
@@ -21,6 +22,7 @@ interface MyFormValues {
   license: string;
   gender: "male" | "female";
   speciality: speciality | "";
+  birth_date: Date;
 }
 
 type speciality = {
@@ -50,6 +52,7 @@ function Register() {
     license: "",
     gender: "male",
     speciality: "",
+    birth_date: new Date(),
   };
 
   const validationSchema = Yup.object({
@@ -92,7 +95,7 @@ function Register() {
         }}
         validationSchema={validationSchema}
       >
-        {({ isSubmitting, errors, touched }) => (
+        {({ isSubmitting, errors, touched, setFieldValue, values }) => (
           <Form className="space-y-5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -206,6 +209,44 @@ function Register() {
                   className="text-red-500 text-xs mt-1 font-['Work_Sans']"
                 />
               </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="birth_date"
+                className="block text-sm font-medium font-['Poppins'] text-[#7a7a7a] mb-1"
+              >
+                Date of Birth
+              </label>
+              <div className="relative">
+                <Field
+                  type="date"
+                  name="birth_date"
+                  id="birth_date"
+                  className={`pl-10 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none font-['Work_Sans'] sm:text-sm ${
+                    errors.birth_date && touched.birth_date
+                      ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                      : "border-gray-300 focus:ring-[#663fba] focus:border-[#663fba]"
+                  }`}
+                  value={
+                    values.birth_date
+                      ? new Date(values.birth_date).toISOString().split("T")[0]
+                      : ""
+                  }
+                  onChange={(e) => {
+                    const dateValue = e.target.value;
+                    const dateObject = dateValue ? new Date(dateValue) : null;
+                    console.log(dateObject);
+                    setFieldValue("birth_date", dateObject);
+                  }}
+                />
+                <Calendar className="absolute left-3 top-2.5 h-4 w-4 text-[#7a7a7a]" />
+              </div>
+              <ErrorMessage
+                name="birth_date"
+                component="div"
+                className="text-red-500 text-xs mt-1 font-['Work_Sans']"
+              />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

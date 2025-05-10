@@ -19,6 +19,8 @@ import GeneralDrugAnalytics from "./pages/GeneralDrugAnalytics/GeneralDrugAnalyt
 import GeneralDiseaseAnalytics from "./pages/GeneralDiseaseAnalytics/GeneralDiseaseAnalytics";
 import DefineAllergy from "./pages/DefineAllergy/DefineAllergy";
 import SinglePatientPage from "./pages/profilePage/SinglePatientPage";
+import Reports from "./pages/Reports/Reports";
+import SingleReportPage from "./pages/SingleReportPage/SingleReportPage";
 
 function App() {
   return (
@@ -44,6 +46,8 @@ function App() {
             element={<ClassifcationAnalytics />}
             path="/analytics/classification/:id"
           />
+          <Route element={<Reports />} path="/reports" />
+          <Route element={<SingleReportPage />} path="/report/:reportId" />
           <Route element={<Analytics />} path="/analytics" />
           <Route
             element={<GeneralDrugAnalytics />}

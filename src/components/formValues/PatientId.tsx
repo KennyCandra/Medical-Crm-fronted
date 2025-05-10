@@ -14,7 +14,7 @@ const PatientId = ({
 }) => {
   const location = useLocation();
   const [searchValue, setSearchValue] = useState<string>("");
-  const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
+  const [dropdownVisiblePatient, setDropdownVisiblePatient] = useState<boolean>(false);
   const [selectedPatient, setSelectedPatient] = useState<User | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const patientData = useFetchPatientData(searchValue);
@@ -25,10 +25,10 @@ const PatientId = ({
     debounce((value: string) => {
       if (value.length >= 1) {
         setSearchValue(value);
-        setDropdownVisible(true);
+        setDropdownVisiblePatient(true);
       } else {
         setSearchValue("");
-        setDropdownVisible(false);
+        setDropdownVisiblePatient(false);
       }
     }, 300)
   ).current;
@@ -36,7 +36,7 @@ const PatientId = ({
   const handlePatientSelect = (user: User) => {
     setPatientId(user.nid);
     setSelectedPatient(user);
-    setDropdownVisible(false);
+    setDropdownVisiblePatient(false);
     setSearchValue("");
   };
 
@@ -67,7 +67,7 @@ const PatientId = ({
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setDropdownVisible(false);
+        setDropdownVisiblePatient(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -119,7 +119,7 @@ const PatientId = ({
           }
           onFocus={() => {
             if (searchValue && searchValue.length >= 1) {
-              setDropdownVisible(true);
+              setDropdownVisiblePatient(true);
             }
           }}
           className={`block w-full px-4 py-3 rounded-lg border shadow-sm focus:outline-none sm:text-sm ${
@@ -166,7 +166,7 @@ const PatientId = ({
         className="text-red-500 text-sm mt-1"
       />
 
-      {dropdownVisible && searchValue.length >= 1 && (
+      {dropdownVisiblePatient && searchValue.length >= 1 && (
         <div ref={dropdownRef} className="relative">
           <div className="absolute z-30 bg-white border border-gray-300 rounded-lg shadow-lg w-full max-h-60 overflow-y-auto mt-1">
             {patientData.isLoading ? (

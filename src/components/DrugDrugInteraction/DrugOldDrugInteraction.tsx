@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { medication } from "../../pages/createPrescription/CreatePrescription";
 import instance from "../../axios/instance";
-import { AlertTriangle, Check, X, AlertCircle, Info } from "lucide-react";
+import { AlertTriangle, Check, AlertCircle, Info } from "lucide-react";
 
 interface props {
   medication: medication[];
@@ -35,7 +35,7 @@ function DrugOldDrugInteraction({ medication, patientNid }: props) {
   });
 
   const { data, isLoading, isError } = useQuery<APICall>({
-    queryKey: ["interaction", drug],
+    queryKey: ["interaction", drug, patientNid],
     queryFn: async () => {
       return instance
         .get(`/drug/${patientNid}/`, {
@@ -48,7 +48,7 @@ function DrugOldDrugInteraction({ medication, patientNid }: props) {
         });
     },
     enabled: medication.length >= 1 && patientNid !== "",
-    staleTime: 0
+    staleTime: 0,
   });
 
   if (!patientNid) {

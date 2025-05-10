@@ -23,7 +23,7 @@ function GeneralDrugAnalytics() {
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["generalAnalytics"],
     queryFn: () =>
-      axios.get("http://localhost:8001/analytics/").then((res) => {
+      axios.get("https://medical-crm-backend-production.up.railway.app/analytics/").then((res) => {
         console.log(res.data);
         return res.data;
       }),

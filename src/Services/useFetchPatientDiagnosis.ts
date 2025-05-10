@@ -21,7 +21,7 @@ type APIRes = {
 const useFetchPatientDiagnosis = (nid: string) => {
     return useQuery<APIRes>({
         queryKey: ['patientDiagnosis', nid],
-        queryFn: () => axios(`http://localhost:8001/diagnosis/${nid}`).then(res => res.data),
+        queryFn: () => axios(`https://medical-crm-backend-production.up.railway.app/diagnosis/${nid}`).then(res => res.data),
         staleTime: 1000 * 60 * 5,
     })
 }

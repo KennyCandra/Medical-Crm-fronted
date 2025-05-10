@@ -18,7 +18,7 @@ function RequiringAuth() {
   const { isExpired } = useJwt(accessToken!);
   const refreshToken = async () => {
     const response = await axios.get(
-      "http://localhost:8001/auth/refreshToken",
+      "https://medical-crm-backend-production.up.railway.app/auth/refreshToken",
       {
         withCredentials: true,
       }

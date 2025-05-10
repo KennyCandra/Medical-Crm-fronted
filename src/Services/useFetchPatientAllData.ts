@@ -66,7 +66,7 @@ export type Patient = {
 const useFetchPatientAllData = (nid: string | undefined, key: string) => {
     return useQuery<Patient>({
         queryKey: [key],
-        queryFn: () => instance.get(`http://localhost:8001/auth/patient/${nid}`).then(res => res.data),
+        queryFn: () => instance.get(`https://medical-crm-backend-production.up.railway.app/auth/patient/${nid}`).then(res => res.data),
         enabled: !!nid,
         refetchOnWindowFocus: false,
         staleTime: 5 * 60 * 1000,

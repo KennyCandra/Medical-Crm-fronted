@@ -22,7 +22,7 @@ function SinglePagePrescription() {
   const { data, isLoading } = useQuery<dataAPI>({
     queryKey: ["singlePresc", id],
     queryFn: () =>
-      axios.get(`http://localhost:8001/presc/${id}`).then((res) => {
+      axios.get(`https://medical-crm-backend-production.up.railway.app/presc/${id}`).then((res) => {
         return res.data;
       }),
   });

@@ -51,6 +51,7 @@ const actions = [
 
 function Profile() {
   const { prescriptionsQuery } = usePrescriptions();
+
   const { user, role, nid } = userStore();
   const [err, setErr] = useState<string>("");
   const header = (role: "doctor" | "patient" | "owner") => {
@@ -100,7 +101,7 @@ function Profile() {
     {
       id: 1,
       text: "prescriptions",
-      number: prescriptionsQuery.data?.prescriptions.length || 0,
+      number: 0,
       color: " bg-linear-to-r from-primary via-primary to-white text-white",
       allowedRoles: ["doctor", "patient"],
       textUrl: "/prescription",
@@ -133,6 +134,9 @@ function Profile() {
       textUrl: "/allergy/create",
     },
   ];
+  if (prescriptionsQuery.isLoading) return <div>loading</div>;
+
+  if (diagnosisQuery.isError) return <div>error</div>;
 
   return (
     <Presentational

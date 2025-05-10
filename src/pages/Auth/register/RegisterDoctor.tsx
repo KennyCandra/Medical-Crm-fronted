@@ -40,7 +40,7 @@ function Register() {
   const { data, isLoading, isError } = useQuery<fetchedData>({
     queryKey: ["specialities"],
     queryFn: () =>
-      axios.get("http://localhost:8001/spec").then((res) => res.data),
+      axios.get("https://medical-crm-backend-production.up.railway.app/spec").then((res) => res.data),
   });
 
   const initialValues: MyFormValues = {
@@ -83,7 +83,7 @@ function Register() {
           try {
             setSubmitting(true);
             const res = await axios.post(
-              "http://localhost:8001/auth/sign-up",
+              "https://medical-crm-backend-production.up.railway.app/auth/sign-up",
               values
             );
             console.log(res);

@@ -19,7 +19,7 @@ function DrugDrugInteraction({ medication, patientNid }: props) {
     queryKey: ["interaction", drug, patientNid],
     queryFn: async () => {
       return axios
-        .get(`http://localhost:8001/drug/interaction?drug=${drug}`)
+        .get(`https://medical-crm-backend-production.up.railway.app/drug/interaction?drug=${drug}`)
         .then((res) => {
           return res.data;
         });

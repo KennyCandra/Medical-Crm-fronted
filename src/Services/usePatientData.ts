@@ -18,7 +18,7 @@ const useFetchPatientData = (searchValue: string) => {
     return useQuery<userAPI>({
         queryKey: ["patientData", searchValue],
         queryFn: () =>
-            axios.get(`http://localhost:8001/auth/${searchValue}`).then((res) => {
+            axios.get(`https://medical-crm-backend-production.up.railway.app/auth/${searchValue}`).then((res) => {
                 return res.data;
             }),
         enabled: searchValue.length >= 1,

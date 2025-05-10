@@ -18,7 +18,7 @@ function CategoryAnalytics() {
   const analytics = useQuery<CategoryApiData>({
     queryKey: ["categoryAnalytics", id],
     queryFn: () =>
-      axios.get(`http://localhost:8001/analytics/${id}`).then((res) => {
+      axios.get(`https://medical-crm-backend-production.up.railway.app/analytics/${id}`).then((res) => {
         console.log(res.data);
         return res.data;
       }),

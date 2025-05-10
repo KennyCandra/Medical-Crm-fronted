@@ -80,7 +80,7 @@ function CreatePrescription() {
     queryKey: ["drugs", drugSearchValue],
     queryFn: () =>
       axios
-        .post("http://localhost:8001/drug/", {
+        .post("https://medical-crm-backend-production.up.railway.app/drug/", {
           value: drugSearchValue,
         })
         .then((res) => res.data),

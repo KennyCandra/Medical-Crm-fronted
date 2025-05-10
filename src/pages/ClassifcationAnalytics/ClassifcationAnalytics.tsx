@@ -22,7 +22,7 @@ function ClassificationAnalytics() {
     queryKey: ["classification analytics", id],
     queryFn: () =>
       axios
-        .get(`http://localhost:8001/analytics/classification/${id}`)
+        .get(`https://medical-crm-backend-production.up.railway.app/analytics/classification/${id}`)
         .then((res) => {
           console.log(res.data);
           return res.data;

@@ -47,7 +47,7 @@ const DiseaseId = ({
     queryKey: ["diseases", searchTerm],
     queryFn: () =>
       axios
-        .get(`http://localhost:8001/disease/${searchTerm}`)
+        .get(`https://medical-crm-backend-production.up.railway.app/disease/${searchTerm}`)
         .then((res) => res.data),
     enabled: searchTerm.length >= 1,
   });

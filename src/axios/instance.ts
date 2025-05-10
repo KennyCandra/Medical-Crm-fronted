@@ -1,7 +1,7 @@
 import axios from "axios";
 import { userStore } from "../zustand/userStore";
 
-const API_BASE_URL = "http://localhost:8001";
+const API_BASE_URL = "https://medical-crm-backend-production.up.railway.app/";
 
 const instance = axios.create({
     baseURL: API_BASE_URL,
@@ -28,7 +28,7 @@ instance.interceptors.response.use(function (response) {
     if (error.response && error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         try {
-            const res = await axios.get('http://localhost:8001/auth/refresh', { withCredentials: true });
+            const res = await axios.get('http://medical-crm-backend-production.up.railway.app/auth/refresh', { withCredentials: true });
             const { accessToken } = res.data;
             userStore.getState().setAccessToken(accessToken);
             return instance(originalRequest);

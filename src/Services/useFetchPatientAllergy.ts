@@ -12,7 +12,7 @@ type allergyAPI = {
 const useFetchPatientAllergy = (nid: string, role: 'patient' | 'doctor' | 'owner') => {
     return useQuery<allergyAPI>({
         queryKey: ['patientAllergy', nid],
-        queryFn: () => axios(`http://localhost:8001/allergy/${nid}`).then(res => res.data),
+        queryFn: () => axios(`https://medical-crm-backend-production.up.railway.app/allergy/${nid}`).then(res => res.data),
         staleTime: 1000 * 60 * 5,
         enabled: role === "patient",
     })

@@ -85,7 +85,7 @@ function RegisterPatient() {
           try {
             setSubmitting(true);
             const res = await axios.post(
-              "http://localhost:8001/auth/sign-up",
+              "https://medical-crm-backend-production.up.railway.app/auth/sign-up",
               values
             );
             console.log(res);

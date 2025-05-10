@@ -93,7 +93,7 @@ function AsideNormalLayout({ isCollapsed, setIsCollapsed }) {
 
   const handleLogout = async () => {
     try {
-      await axios.delete("http://localhost:8001/auth/logout", {
+      await axios.delete("https://medical-crm-backend-production.up.railway.app/auth/logout", {
         withCredentials: true,
       });
       setAccessToken("");

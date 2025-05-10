@@ -25,7 +25,7 @@ function SinglePageReport() {
   const { data, isLoading } = useQuery<DataAPI>({
     queryKey: ["singleReport", reportId],
     queryFn: () =>
-      axios.get(`http://localhost:8001/reports/${reportId}`).then((res) => {
+      axios.get(`https://medical-crm-backend-production.up.railway.app/reports/${reportId}`).then((res) => {
         console.log(res.data)
         return res.data;
       }),

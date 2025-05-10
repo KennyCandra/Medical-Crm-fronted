@@ -97,7 +97,7 @@ function DefineAllergy() {
     queryKey: ["allergies", searchValue],
     queryFn: () =>
       axios
-        .get(`http://localhost:8001/allergy/specific/${searchValue}`)
+        .get(`https://medical-crm-backend-production.up.railway.app/allergy/specific/${searchValue}`)
         .then((res) => {
           console.log(res.data);
           return res.data;

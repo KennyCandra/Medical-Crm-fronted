@@ -9,7 +9,6 @@ const PatientId = ({
   setFieldValue,
   errors,
   touched,
-  patientId,
   setPatientId,
 }) => {
   const location = useLocation();

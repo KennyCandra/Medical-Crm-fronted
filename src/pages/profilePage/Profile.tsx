@@ -67,7 +67,6 @@ function Profile() {
   const doctor = useFetchDoctorData(user, setErr, role);
 
   const diagnosisQuery = useFetchPatientDiagnosis(nid);
-  const allergyQuery = useFetchPatientAllergy(nid, role);
   const diagnsis =
     diagnosisQuery?.data?.diagnosis.map((diagnoses) => {
       return diagnoses.disease.name;

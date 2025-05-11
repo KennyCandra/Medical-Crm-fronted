@@ -39,7 +39,7 @@ function SinglePagePrescription() {
   const handleChangeStatus = () => {
     instance
       .put(`presc/edit/${id}`)
-      .then((res) => {
+      .then(() => {
         setStatus("done");
       })
       .catch((err) => {

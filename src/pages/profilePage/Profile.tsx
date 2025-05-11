@@ -136,7 +136,6 @@ function Profile() {
   ];
   if (prescriptionsQuery.isLoading) return <div>loading</div>;
 
-  if (diagnosisQuery.isError) return <div>error</div>;
 
   return (
     <Presentational

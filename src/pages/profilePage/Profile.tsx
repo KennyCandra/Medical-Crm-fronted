@@ -3,7 +3,6 @@ import { useState } from "react";
 import useFetchDoctorData from "../../Services/useFetchDoctorData";
 import { usePrescriptions } from "../../Services/usePrescriptions";
 import useFetchPatientDiagnosis from "../../Services/useFetchPatientDiagnosis";
-import useFetchPatientAllergy from "../../Services/useFetchPatientAllergy";
 import Presentational from "./Presentational";
 
 export type card = {

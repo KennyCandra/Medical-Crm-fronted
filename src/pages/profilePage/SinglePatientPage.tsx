@@ -25,7 +25,6 @@ type CardInput = {
 const PatientEndpoint = () => {
   const { nid } = useParams<{ nid: string }>();
   const patientData = useFetchPatientData(nid, "singlepage" + nid);
-  console.log(patientData.data, "patientData");
   const calculateAge = (birthDate: string) => {
     const today = new Date();
     const birth = new Date(birthDate);

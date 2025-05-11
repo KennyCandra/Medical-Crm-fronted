@@ -14,6 +14,7 @@ import {
   YAxis,
 } from "recharts";
 import { ArrowLeft, AlertCircle, BarChart2 } from "lucide-react";
+import { BASEURL } from "../../axios/instance";
 
 function ClassificationAnalytics() {
   const { id } = useParams();
@@ -22,9 +23,8 @@ function ClassificationAnalytics() {
     queryKey: ["classification analytics", id],
     queryFn: () =>
       axios
-        .get(`https://medical-crm-backend-production.up.railway.app/analytics/classification/${id}`)
+        .get(`${BASEURL}/analytics/classification/${id}`)
         .then((res) => {
-          console.log(res.data);
           return res.data;
         }),
   });

@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useEffect } from "react";
 import { Tooltip } from "../Tooltip/Tooltip";
+import { BASEURL } from "../../axios/instance";
 
 const navigationItems = [
   {
@@ -93,7 +94,7 @@ function AsideNormalLayout({ isCollapsed, setIsCollapsed }) {
 
   const handleLogout = async () => {
     try {
-      await axios.delete("https://medical-crm-backend-production.up.railway.app/auth/logout", {
+      await axios.delete(`${BASEURL}/auth/logout`, {
         withCredentials: true,
       });
       setAccessToken("");

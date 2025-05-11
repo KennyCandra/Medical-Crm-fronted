@@ -14,6 +14,7 @@ import {
 } from "recharts";
 import { useState } from "react";
 import { ChevronDown, ChevronUp, RefreshCcw, AlertCircle, PieChart, BarChart2 } from "lucide-react";
+import { BASEURL } from "../../axios/instance";
 
 function GeneralDrugAnalytics() {
   const navigate = useNavigate();
@@ -23,8 +24,7 @@ function GeneralDrugAnalytics() {
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["generalAnalytics"],
     queryFn: () =>
-      axios.get("https://medical-crm-backend-production.up.railway.app/analytics/").then((res) => {
-        console.log(res.data);
+      axios.get(`${BASEURL}/analytics/`).then((res) => {
         return res.data;
       }),
   });

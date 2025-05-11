@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { Form, Formik, Field, ErrorMessage } from "formik";
 import { debounce } from "lodash";
 import DrugDrugInteraction from "../../components/DrugDrugInteraction/DrugDrugInteraction";
-import instance from "../../axios/instance";
+import instance, { BASEURL } from "../../axios/instance";
 import DrugOldDrugInteraction from "../../components/DrugDrugInteraction/DrugOldDrugInteraction";
 import MedicationsTable from "../../components/MedicationsTable/MedicationTable";
 import PatientId from "../../components/formValues/PatientId";
@@ -80,7 +80,7 @@ function CreatePrescription() {
     queryKey: ["drugs", drugSearchValue],
     queryFn: () =>
       axios
-        .post("https://medical-crm-backend-production.up.railway.app/drug/", {
+        .post(`${BASEURL}/drug/`, {
           value: drugSearchValue,
         })
         .then((res) => res.data),
@@ -172,7 +172,6 @@ function CreatePrescription() {
               { setSubmitting, setFieldError, resetForm }
             ) => {
               try {
-                console.log(values);
                 if (values.medication.length === 0) {
                   setFieldError(
                     "medication",
@@ -229,7 +228,7 @@ function CreatePrescription() {
             validationSchema={validationSchema}
           >
             {({ isSubmitting, errors, touched, setFieldValue, values }) => (
-              <Form className="space-y-8" onClick={() => console.log(values)}>
+              <Form className="space-y-8">
                 {message && (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6 shadow-sm animate-fade-in">
                     <div className="flex">

@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { debounce } from "lodash";
 import { userStore } from "../../zustand/userStore";
-import instance from "../../axios/instance";
+import instance, { BASEURL } from "../../axios/instance";
 import useFetchPatientAllergy from "../../Services/useFetchPatientAllergy";
 
 type allergy = {
@@ -97,9 +97,8 @@ function DefineAllergy() {
     queryKey: ["allergies", searchValue],
     queryFn: () =>
       axios
-        .get(`https://medical-crm-backend-production.up.railway.app/allergy/specific/${searchValue}`)
+        .get(`${BASEURL}/allergy/specific/${searchValue}`)
         .then((res) => {
-          console.log(res.data);
           return res.data;
         }),
     enabled: searchValue.length >= 1,

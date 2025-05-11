@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import CustomButton from "../../components/CustomButton/CustomButton";
-import instance from "../../axios/instance";
+import instance, { BASEURL } from "../../axios/instance";
 import { useEffect, useState } from "react";
 import { ClipboardCheck, ClipboardList } from "lucide-react";
 
@@ -25,8 +25,7 @@ function SinglePageReport() {
   const { data, isLoading } = useQuery<DataAPI>({
     queryKey: ["singleReport", reportId],
     queryFn: () =>
-      axios.get(`https://medical-crm-backend-production.up.railway.app/reports/${reportId}`).then((res) => {
-        console.log(res.data)
+      axios.get(`${BASEURL}/reports/${reportId}`).then((res) => {
         return res.data;
       }),
   });
@@ -48,13 +47,11 @@ function SinglePageReport() {
         setReviewed(true);
       })
       .catch((err) => {
-        console.log(err.status);
         if (err.status === 401) {
           setErr("Unauthorized, this report does not belong to you");
           return;
         }
         if (err.status === 404) {
-          console.log(err);
           setErr(err.response.data.message);
           return;
         }
@@ -62,7 +59,6 @@ function SinglePageReport() {
           setErr("Server error, please try again later");
           return;
         }
-        console.log(err);
         setReviewed(false);
       });
   };

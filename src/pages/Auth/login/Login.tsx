@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { userStore } from "../../../zustand/userStore";
 import { useNavigate, Link } from "react-router-dom";
 import { User, Lock } from "lucide-react";
+import { BASEURL } from "../../../axios/instance";
 
 // Improved type definition with required fields
 interface LoginFormValues {
@@ -47,7 +48,7 @@ function Login() {
 
     try {
       const res = await axios.post(
-        `https://medical-crm-backend-production.up.railway.app/auth/login`,
+        `${BASEURL}/auth/login`,
         values,
         { withCredentials: true }
       );

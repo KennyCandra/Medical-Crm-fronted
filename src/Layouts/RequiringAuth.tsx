@@ -3,6 +3,7 @@ import { useJwt } from "react-jwt";
 import { userStore } from "../zustand/userStore";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { BASEURL } from "../axios/instance";
 
 function RequiringAuth() {
   const {
@@ -18,7 +19,7 @@ function RequiringAuth() {
   const { isExpired } = useJwt(accessToken!);
   const refreshToken = async () => {
     const response = await axios.get(
-      "https://medical-crm-backend-production.up.railway.app/auth/refreshToken",
+      `${BASEURL}/auth/refreshToken`,
       {
         withCredentials: true,
       }

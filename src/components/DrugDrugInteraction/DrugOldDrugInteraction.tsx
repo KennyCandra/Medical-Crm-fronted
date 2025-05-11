@@ -199,7 +199,6 @@ function DrugOldDrugInteraction({ medication, patientNid }: props) {
                   {data.allergies.map((allergy, index) => {
                     const { bgColor, textColor, borderColor, icon } =
                       getSeverityDisplay(allergy.severity);
-                    console.log(allergy.severity);
                     return (
                       <div
                         key={index}

@@ -3,6 +3,7 @@
 
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios";
+import { BASEURL } from "../axios/instance";
 
 export type User = {
     fullname: string;
@@ -18,7 +19,7 @@ const useFetchPatientData = (searchValue: string) => {
     return useQuery<userAPI>({
         queryKey: ["patientData", searchValue],
         queryFn: () =>
-            axios.get(`https://medical-crm-backend-production.up.railway.app/auth/${searchValue}`).then((res) => {
+            axios.get(`${BASEURL}/auth/${searchValue}`).then((res) => {
                 return res.data;
             }),
         enabled: searchValue.length >= 1,

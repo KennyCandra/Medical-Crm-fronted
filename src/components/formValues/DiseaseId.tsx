@@ -3,6 +3,7 @@ import axios from "axios";
 import { ErrorMessage, Field } from "formik";
 import { debounce } from "lodash";
 import { useEffect, useRef, useState } from "react";
+import { BASEURL } from "../../axios/instance";
 
 type Disease = {
   id: string;
@@ -46,9 +47,7 @@ const DiseaseId = ({
   const diseaseQuery = useQuery<DiseasesResponse>({
     queryKey: ["diseases", searchTerm],
     queryFn: () =>
-      axios
-        .get(`https://medical-crm-backend-production.up.railway.app/disease/${searchTerm}`)
-        .then((res) => res.data),
+      axios.get(`${BASEURL}/disease/${searchTerm}`).then((res) => res.data),
     enabled: searchTerm.length >= 1,
   });
 

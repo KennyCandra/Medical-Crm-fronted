@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
+import { BASEURL } from "../axios/instance";
 
 type allergies = {
     allergy: string;
@@ -12,7 +13,7 @@ type allergyAPI = {
 const useFetchPatientAllergy = (nid: string, role: 'patient' | 'doctor' | 'owner') => {
     return useQuery<allergyAPI>({
         queryKey: ['patientAllergy', nid],
-        queryFn: () => axios(`https://medical-crm-backend-production.up.railway.app/allergy/${nid}`).then(res => res.data),
+        queryFn: () => axios(`${BASEURL}/allergy/${nid}`).then(res => res.data),
         staleTime: 1000 * 60 * 5,
         enabled: role === "patient",
     })

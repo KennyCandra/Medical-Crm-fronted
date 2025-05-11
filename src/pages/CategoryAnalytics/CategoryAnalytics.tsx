@@ -11,6 +11,7 @@ import {
   Legend,
 } from "recharts";
 import { ArrowLeft, AlertCircle } from "lucide-react";
+import { BASEURL } from "../../axios/instance";
 
 function CategoryAnalytics() {
   const { id } = useParams();
@@ -18,8 +19,7 @@ function CategoryAnalytics() {
   const analytics = useQuery<CategoryApiData>({
     queryKey: ["categoryAnalytics", id],
     queryFn: () =>
-      axios.get(`https://medical-crm-backend-production.up.railway.app/analytics/${id}`).then((res) => {
-        console.log(res.data);
+      axios.get(`${BASEURL}/analytics/${id}`).then((res) => {
         return res.data;
       }),
   });

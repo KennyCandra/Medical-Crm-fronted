@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { medication } from "../../pages/createPrescription/CreatePrescription";
 import axios from "axios";
 import { AlertTriangle, Check, AlertCircle, PlusCircle } from "lucide-react";
+import { BASEURL } from "../../axios/instance";
 
 interface props {
   medication: medication[];
@@ -19,7 +20,7 @@ function DrugDrugInteraction({ medication, patientNid }: props) {
     queryKey: ["interaction", drug, patientNid],
     queryFn: async () => {
       return axios
-        .get(`https://medical-crm-backend-production.up.railway.app/drug/interaction?drug=${drug}`)
+        .get(`${BASEURL}/drug/interaction?drug=${drug}`)
         .then((res) => {
           return res.data;
         });

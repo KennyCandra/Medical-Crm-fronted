@@ -43,10 +43,6 @@ export const useUserId = () => {
         },
     });
 
-    if (userIdQuery.isError) {
-        console.log('error')
-        console.log(userIdQuery.error)
-    }
     return {
         userIdQuery,
     }

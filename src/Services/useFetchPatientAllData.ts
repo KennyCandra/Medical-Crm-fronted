@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import instance from '../axios/instance';
+import instance, { BASEURL } from '../axios/instance';
 
 export type Patient = {
     id: string;
@@ -66,7 +66,7 @@ export type Patient = {
 const useFetchPatientAllData = (nid: string | undefined, key: string) => {
     return useQuery<Patient>({
         queryKey: [key],
-        queryFn: () => instance.get(`https://medical-crm-backend-production.up.railway.app/auth/patient/${nid}`).then(res => res.data),
+        queryFn: () => instance.get(`${BASEURL}/auth/patient/${nid}`).then(res => res.data),
         enabled: !!nid,
         refetchOnWindowFocus: false,
         staleTime: 5 * 60 * 1000,

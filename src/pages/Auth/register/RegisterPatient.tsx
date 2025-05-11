@@ -10,6 +10,7 @@ import {
   ArrowLeft,
   Calendar,
 } from "lucide-react";
+import { BASEURL } from "../../../axios/instance";
 
 interface MyFormValues {
   firstName: string;
@@ -85,7 +86,7 @@ function RegisterPatient() {
           try {
             setSubmitting(true);
             const res = await axios.post(
-              "https://medical-crm-backend-production.up.railway.app/auth/sign-up",
+              `${BASEURL}/auth/sign-up`,
               values
             );
             console.log(res);
@@ -238,7 +239,6 @@ function RegisterPatient() {
                   onChange={(e) => {
                     const dateValue = e.target.value;
                     const dateObject = dateValue ? new Date(dateValue) : null;
-                    console.log(dateObject)
                     setFieldValue("birth_date", dateObject);
                   }}
                 />

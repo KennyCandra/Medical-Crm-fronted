@@ -80,7 +80,6 @@ const PatientId = ({
     if (nid && !clickedPatient.isLoading) {
       handlePatientSelect(clickedPatient?.data?.users[0]);
       setFieldValue("patientId", clickedPatient?.data?.users[0].nid);
-      console.log(patientId);
     }
   }, [nid, clickedPatient.isLoading]);
 

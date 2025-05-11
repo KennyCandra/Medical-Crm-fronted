@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
+import { BASEURL } from "../axios/instance";
 type Disease = {
     id: string;
     name: string;
@@ -21,7 +22,7 @@ type APIRes = {
 const useFetchPatientDiagnosis = (nid: string) => {
     return useQuery<APIRes>({
         queryKey: ['patientDiagnosis', nid],
-        queryFn: () => axios(`https://medical-crm-backend-production.up.railway.app/diagnosis/${nid}`).then(res => res.data),
+        queryFn: () => axios(`${BASEURL}/diagnosis/${nid}`).then(res => res.data),
         staleTime: 1000 * 60 * 5,
     })
 }

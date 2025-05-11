@@ -3,7 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import type { prescription } from "../../../public/types/types";
 import CustomButton from "../../components/CustomButton/CustomButton";
-import instance from "../../axios/instance";
+import instance, { BASEURL } from "../../axios/instance";
 import { useEffect, useRef, useState } from "react";
 
 type dataAPI = {
@@ -22,7 +22,7 @@ function SinglePagePrescription() {
   const { data, isLoading } = useQuery<dataAPI>({
     queryKey: ["singlePresc", id],
     queryFn: () =>
-      axios.get(`https://medical-crm-backend-production.up.railway.app/presc/${id}`).then((res) => {
+      axios.get(`${BASEURL}/presc/${id}`).then((res) => {
         return res.data;
       }),
   });
@@ -41,16 +41,13 @@ function SinglePagePrescription() {
       .put(`presc/edit/${id}`)
       .then((res) => {
         setStatus("done");
-        console.log(res.data);
       })
       .catch((err) => {
-        console.log(err.status);
         if (err.status === 401) {
           setErr("Unauthorized, this prescription does not belong to you");
           return;
         }
         if (err.status === 404) {
-          console.log(err);
           setErr(err.response.data.message);
           return;
         }
@@ -58,7 +55,6 @@ function SinglePagePrescription() {
           setErr("Server error, please try again later");
           return;
         }
-        console.log(err);
         setStatus("taking");
       });
   };

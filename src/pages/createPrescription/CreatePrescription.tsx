@@ -274,7 +274,6 @@ function CreatePrescription() {
                     <PatientId
                       errors={errors.patientId}
                       touched={touched.patientId}
-                      patientId={patientId}
                       setPatientId={setPatientId}
                       setFieldValue={setFieldValue}
                     />

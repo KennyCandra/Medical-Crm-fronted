@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
-import { useUserId } from "../../Services/usePrescriptions";
 import * as Yup from "yup";
 import { Form, Formik, Field, ErrorMessage } from "formik";
 import { debounce } from "lodash";
@@ -37,7 +36,6 @@ interface MyFormValues {
 }
 
 function CreatePrescription() {
-  const { userIdQuery } = useUserId();
   const [patientId, setPatientId] = useState<string>("");
   const [select, setSelect] = useState<medication[]>([]);
   const [drugSearchValue, setDrugSearchValue] = useState<string>("");
@@ -49,7 +47,7 @@ function CreatePrescription() {
     medication: Yup.array().min(1, "At least one medication is required"),
     description: Yup.string().max(
       500,
-      "Description must be less than 500 characters"
+      "Description must be less than 500 characters",
     ),
   });
 
@@ -67,7 +65,7 @@ function CreatePrescription() {
       } else {
         setDrugSearchValue("");
       }
-    }, 300)
+    }, 300),
   ).current;
 
   useEffect(() => {
@@ -169,13 +167,13 @@ function CreatePrescription() {
             initialValues={initialValues}
             onSubmit={async (
               values: MyFormValues,
-              { setSubmitting, setFieldError, resetForm }
+              { setSubmitting, setFieldError, resetForm },
             ) => {
               try {
                 if (values.medication.length === 0) {
                   setFieldError(
                     "medication",
-                    "At least one medication is required"
+                    "At least one medication is required",
                   );
                   return;
                 }
@@ -199,7 +197,7 @@ function CreatePrescription() {
                   if (err.response.status === 401) {
                     setFieldError(
                       "general",
-                      "Unauthorized. Please log in again."
+                      "Unauthorized. Please log in again.",
                     );
                   } else if (
                     err.response.status === 404 &&
@@ -214,7 +212,7 @@ function CreatePrescription() {
                   } else {
                     setFieldError(
                       "general",
-                      `Error: ${err.response.data.message || "Unknown error"}`
+                      `Error: ${err.response.data.message || "Unknown error"}`,
                     );
                   }
                 } else {
@@ -452,18 +450,18 @@ function CreatePrescription() {
                                             setDrugSearchValue("");
                                           }}
                                           disabled={select.some(
-                                            (med) => med.drug.id === drug.id
+                                            (med) => med.drug.id === drug.id,
                                           )}
                                           className={`text-white px-3 py-1 rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 ${
                                             select.some(
-                                              (med) => med.drug.id === drug.id
+                                              (med) => med.drug.id === drug.id,
                                             )
                                               ? "bg-gray-300 cursor-not-allowed"
                                               : "bg-blue-600 hover:bg-blue-700 focus:ring-blue-500"
                                           }`}
                                         >
                                           {select.some(
-                                            (med) => med.drug.id === drug.id
+                                            (med) => med.drug.id === drug.id,
                                           )
                                             ? "Added"
                                             : "Add"}

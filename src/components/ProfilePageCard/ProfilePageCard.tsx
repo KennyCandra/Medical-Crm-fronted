@@ -11,20 +11,17 @@ interface ProfilePageCardProps {
 const ProfilePageCard: React.FC<ProfilePageCardProps> = ({
   text,
   number,
-  color,
   textUrl,
 }) => {
-  const cardClass = color || "bg-white shadow-md text-gray-900";
-
   return (
-    <div className={`rounded-lg p-6 ${cardClass} border-gray-500`}>
+    <div className="bg-white p-6 cursor-pointer border border-gray-200 rounded-lg hover:bg-gray-100 transition-all group">
       <Link
         to={textUrl ? textUrl : undefined}
-        className="text-lg font-medium capitalize hover:underline"
+        className="text-lg font-medium capitalize group-hover:underline"
       >
         {text}
       </Link>
-      <div className="mt-2 text-1xl font-bold">{number}</div>
+      <div className="mt-2 text-2xl font-semibold text-gray-700">{number}</div>
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useUserId } from "../../Services/usePrescriptions";
 import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import instance from "../../axios/instance";
@@ -24,7 +23,7 @@ function CreateDiagnosis() {
   const [patientId, setPatientId] = useState<string>("");
   const [message, setMessage] = useState<string>("");
   const [messageStatus, setMessageStatus] = useState<"success" | "error" | "">(
-    ""
+    "",
   );
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedDisease, setSelectedDisease] = useState<Disease | null>(null);
@@ -119,7 +118,7 @@ function CreateDiagnosis() {
               enableReinitialize
               onSubmit={async (
                 values: DiagnosisFormValues,
-                { setSubmitting, resetForm }
+                { setSubmitting, resetForm },
               ) => {
                 try {
                   await instance.post("/diagnosis/create", values);

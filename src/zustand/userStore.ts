@@ -1,31 +1,26 @@
-import { create } from 'zustand'
+import { create } from "zustand";
 
 type state = {
-    user: string | null;
-    accessToken: string | null
-    role: 'patient' | 'doctor' | 'owner' | null
-    isAuthenticated: boolean
-    nid: string | null
-}
-
+  user: {
+    NID: string;
+    first_name: string;
+    last_name: string;
+    gender: string;
+    id: string;
+    role: "doctor" | "admin" | "patient";
+    birth_date: string;
+  };
+  accessToken: string | null;
+};
 
 type actions = {
-    setUser: (user: state['user']) => void;
-    setAccessToken: (accessToken: state['accessToken']) => void;
-    setRole: (role: state['role']) => void;
-    setIsAuthenticated: (isAuthenticated: state['isAuthenticated']) => void;
-    setNid: (nid: state['nid']) => void;
-}
+  setUser: (user: state["user"]) => void;
+  setAccessToken: (accessToken: state["accessToken"]) => void;
+};
 
 export const userStore = create<state & actions>((set) => ({
-    user: null,
-    accessToken: null,
-    role: null,
-    isAuthenticated: false,
-    nid: null,
-    setUser: (user) => set({ user }),
-    setAccessToken: (accessToken) => set({ accessToken }),
-    setRole: (role) => set({ role }),
-    setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
-    setNid: (nid) => set({ nid }),
-}))
+  user: null,
+  accessToken: null,
+  setUser: (user) => set({ user }),
+  setAccessToken: (accessToken) => set({ accessToken }),
+}));

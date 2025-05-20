@@ -6,9 +6,12 @@ import { useState } from "react";
 function NormalLayout() {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   return (
-    <div className="flex flex-1 overflow-y-hidden overflow-x-hidden h-full">
-      <AsideNormalLayout isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
-      <div className={`flex flex-col w-full ${isCollapsed ? "ml-16" : "ml-64"}`}>
+    <div className="flex min-h-screen">
+      <AsideNormalLayout
+        isCollapsed={isCollapsed}
+        setIsCollapsed={setIsCollapsed}
+      />
+      <div className="flex w-[calc(100vw-288px)] flex-col">
         <Header />
         <Outlet />
       </div>

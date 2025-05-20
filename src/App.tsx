@@ -21,51 +21,60 @@ import DefineAllergy from "./pages/DefineAllergy/DefineAllergy";
 import SinglePatientPage from "./pages/profilePage/SinglePatientPage";
 import Reports from "./pages/Reports/Reports";
 import SingleReportPage from "./pages/SingleReportPage/SingleReportPage";
+import { ToastContainer } from "react-toastify";
+import ForgotPass from "./pages/Auth/reset-password/ForgotPass";
+import ResetPass from "./pages/Auth/reset-password/ResetPass";
 
 function App() {
   return (
-    <Routes>
-      <Route element={<AuthLayout />}>
-        <Route element={<Login />} path="/login" />
-        <Route element={<SignUp />} path="/signUp" />
-        <Route element={<RegisterPatient />} path="/register/patient" />
-        <Route element={<RegisterDoctor />} path="/register/doctor" />
-      </Route>
-
-      <Route element={<RequiringAuth />}>
-        <Route element={<NormalLayout />}>
-          <Route element={<Profile />} path="/" />
-          <Route
-            element={<SinglePagePrescription />}
-            path="/prescription/:id"
-          />
-          <Route element={<SinglePatientPage />} path="/patient/:nid" />
-          <Route element={<PrescriptionsPage />} path="/prescription" />
-          <Route element={<CategoryAnalytics />} path="/analytics/:id" />
-          <Route
-            element={<ClassifcationAnalytics />}
-            path="/analytics/classification/:id"
-          />
-          <Route element={<Reports />} path="/reports" />
-          <Route element={<SingleReportPage />} path="/report/:reportId" />
-          <Route element={<Analytics />} path="/analytics" />
-          <Route
-            element={<GeneralDrugAnalytics />}
-            path="/analytics/general-drug-analytics"
-          />
-          <Route
-            element={<GeneralDiseaseAnalytics />}
-            path="/analytics/general-disease-analytics"
-          />
-          <Route
-            element={<CreatePrescriptionPage />}
-            path="/prescription/create"
-          />
-          <Route element={<DefineAllergy />} path="/allergy/create" />
-          <Route element={<CreateDiagonsis />} path="/diagnosis/create" />
+    <>
+      <Routes>
+        <Route element={<AuthLayout />}>
+          <Route element={<Login />} path="/auth/login" />
+          <Route element={<SignUp />} path="/auth/register" />
+          <Route element={<RegisterPatient />} path="/auth/register/patient" />
+          <Route element={<RegisterDoctor />} path="/auth/register/doctor" />
         </Route>
-      </Route>
-    </Routes>
+
+        <Route element={<ForgotPass />} path="/auth/forgot-password" />
+        <Route element={<ResetPass />} path="/auth/reset-password" />
+
+        <Route element={<RequiringAuth />}>
+          <Route element={<NormalLayout />}>
+            <Route element={<Profile />} path="/dashboard" />
+            <Route
+              element={<SinglePagePrescription />}
+              path="/prescription/:id"
+            />
+            <Route element={<SinglePatientPage />} path="/patient/:nid" />
+            <Route element={<PrescriptionsPage />} path="/prescription" />
+            <Route element={<CategoryAnalytics />} path="/analytics/:id" />
+            <Route
+              element={<ClassifcationAnalytics />}
+              path="/analytics/classification/:id"
+            />
+            <Route element={<Reports />} path="/reports" />
+            <Route element={<SingleReportPage />} path="/report/:reportId" />
+            <Route element={<Analytics />} path="/analytics" />
+            <Route
+              element={<GeneralDrugAnalytics />}
+              path="/analytics/general-drug-analytics"
+            />
+            <Route
+              element={<GeneralDiseaseAnalytics />}
+              path="/analytics/general-disease-analytics"
+            />
+            <Route
+              element={<CreatePrescriptionPage />}
+              path="/prescription/create"
+            />
+            <Route element={<DefineAllergy />} path="/allergy/create" />
+            <Route element={<CreateDiagonsis />} path="/diagnosis/create" />
+          </Route>
+        </Route>
+      </Routes>
+      <ToastContainer position="bottom-center" autoClose={3000} />
+    </>
   );
 }
 

@@ -48,30 +48,33 @@ const actions = [
   },
 ];
 
-function Profile() {
+export default function Profile() {
   const { prescriptionsQuery } = usePrescriptions();
 
-  const { user, role, nid } = userStore();
+  const { user } = userStore();
   const [err, setErr] = useState<string>("");
+
+  const name = user?.first_name + " " + user?.last_name;
+
   const header = (role: "doctor" | "patient" | "owner") => {
     switch (role) {
       case "doctor":
-        return `Dr: ${user}`;
+        return `Dr: ${name}`;
       case "patient":
         return "Your Health Dashboard";
       default:
         return "Dashboard";
     }
   };
-  const doctor = useFetchDoctorData(user, setErr, role);
+  const doctor = useFetchDoctorData(name, setErr, user.role);
 
-  const diagnosisQuery = useFetchPatientDiagnosis(nid);
+  const diagnosisQuery = useFetchPatientDiagnosis(user.NID);
   const diagnsis =
     diagnosisQuery?.data?.diagnosis.map((diagnoses) => {
       return diagnoses.disease.name;
     }) || [];
 
-  const qrData = `http://192.168.1.10:5173/patient/${nid}`;
+  const qrData = `http://192.168.1.10:5173/patient/${user.NID}`;
 
   const prescriptions: PrescriptionCard[] = [
     {
@@ -89,7 +92,7 @@ function Profile() {
       number: prescriptionsQuery.data?.completed || 0,
       status: "Completed",
       link: "/prescription?status=completed",
-      color: "bg-gray-100 text-gray-800",
+      color: "bg-blue-100 text-blue-500",
       icon: "✓",
     },
   ];
@@ -107,7 +110,7 @@ function Profile() {
       id: 2,
       text: "diagnosis",
       number:
-        role === "patient"
+        user.role === "patient"
           ? diagnsis.length > 0
             ? `this patient is diagnosed with ${diagnsis.join(", ")}`
             : "No diagnosis available"
@@ -117,8 +120,8 @@ function Profile() {
     },
     {
       id: 3,
-      text: doctor.data?.speciality ? doctor.data.speciality : "N/A",
-      number: "speciality",
+      text: "speciality",
+      number: doctor.data?.speciality ? doctor.data.speciality : "N/A",
       color: null,
       allowedRoles: ["doctor"],
     },
@@ -131,25 +134,23 @@ function Profile() {
       textUrl: "/allergy/create",
     },
   ];
-  if (prescriptionsQuery.isLoading) return <div>loading</div>;
 
+  if (prescriptionsQuery.isLoading) return <div>loading</div>;
 
   return (
     <Presentational
       err={err}
       actions={actions}
       cardsInputs={cardsInputs}
-      header={header(role)}
-      nid={nid}
+      header={header(user.role)}
+      nid={user.NID}
       qrData={qrData}
-      role={role}
+      role={user.role}
       prescriptions={prescriptions}
       showQrCode={true}
       prescriptionsQuery={prescriptionsQuery}
       key={"1"}
-      user={user}
+      user={name}
     />
   );
 }
-
-export default Profile;

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import FormInput from "../../../components/ui/FormInput";
 import Button from "../../../components/ui/Button";
 import { useState } from "react";
@@ -14,6 +14,8 @@ import axios from "axios";
 
 export default function ResetPass() {
   const [loading, setLoading] = useState(false);
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token");
   const navigate = useNavigate();
 
   const {
@@ -27,11 +29,13 @@ export default function ResetPass() {
   const onSubmit = async (values: resetPasswordSchemaType) => {
     setLoading(true);
     try {
-      const res = await axios.post(`${BASEURL}/auth/login`, values, {
-        withCredentials: true,
+      const res = await axios.put(`${BASEURL}/auth/reset-password`, {
+        token: token,
+        newPassword: values.password,
       });
       if (res.status === 200) {
-        navigate("/dashboard");
+        navigate("/auth/login");
+        toast.success("Password changed successfully");
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import FormInput from "../../../components/ui/FormInput";
 import Button from "../../../components/ui/Button";
 import { useState } from "react";
@@ -15,7 +15,6 @@ import axios from "axios";
 export default function ForgotPass() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const navigate = useNavigate();
 
   const {
     register,

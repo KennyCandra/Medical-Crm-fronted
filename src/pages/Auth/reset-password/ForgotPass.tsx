@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import FormInput from "../../../components/ui/FormInput";
 import Button from "../../../components/ui/Button";
 import { useState } from "react";
@@ -14,7 +14,7 @@ import axios from "axios";
 
 export default function ForgotPass() {
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [success, setSuccess] = useState(false);
 
   const {
     register,
@@ -24,14 +24,16 @@ export default function ForgotPass() {
     resolver: zodResolver(resetPasswordUsingEmailSchema),
   });
 
+  const message =
+    "The reset link has been sent to your email, please check your inbox and spam folder";
+
   const onSubmit = async (values: resetPasswordUsingEmailSchemaType) => {
     setLoading(true);
     try {
-      const res = await axios.post(`${BASEURL}/auth/login`, values, {
-        withCredentials: true,
-      });
+      const res = await axios.post(`${BASEURL}/auth/forget-password`, values);
       if (res.status === 200) {
-        navigate("/dashboard");
+        setSuccess(true);
+        toast.success("Link sent successfully");
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -55,30 +57,41 @@ export default function ForgotPass() {
           <img src="/images/logo.png" className="size-8" />
         </div>
 
-        <div className="flex flex-col items-center gap-2">
-          <h1 className="text-3xl font-semibold text-purple-700">
-            Password Reset
-          </h1>
-          <p className="text-gray-500">
-            please enter your email address to sent you the reset link
-          </p>
-        </div>
+        {success ? (
+          <div className="bg-green-100 text-green-700 p-4 rounded-md text-center">
+            <p>{message}</p>
+          </div>
+        ) : (
+          <>
+            <div className="flex flex-col items-center gap-2">
+              <h1 className="text-3xl font-semibold text-purple-700">
+                Password Reset
+              </h1>
+              <p className="text-gray-500">
+                please enter your email address to sent you the reset link
+              </p>
+            </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          <FormInput
-            id="email"
-            placeholder="Email"
-            type="email"
-            label="Email"
-            error={errors.email?.message}
-            {...register("email")}
-          />
-          <Button loading={loading}>Reset password</Button>
-        </form>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col gap-4"
+            >
+              <FormInput
+                id="email"
+                placeholder="Email"
+                type="email"
+                label="Email"
+                error={errors.email?.message}
+                {...register("email")}
+              />
+              <Button loading={loading}>Reset password</Button>
+            </form>
+          </>
+        )}
 
         <div className="text-sm flex justify-center">
           <Link
-            to="/login"
+            to="/auth/login"
             className="font-medium text-purple-700 hover:text-purple-500 transition-all"
           >
             Back to login{" "}
